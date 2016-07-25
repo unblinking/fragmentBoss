@@ -12,26 +12,46 @@ import com.google.common.collect.Iterables;
 
 import java.util.ArrayList;
 
+/**
+ * FragmentBoss is a library module for Android.
+ *
+ * The methods in this library make use of the android.support.v4.app Android API classes, such as
+ * the Fragment, FragmentManager, and FragmentTransaction.
+ *
+ * Some methods use a handler that runs on the UI thread.
+ *
+ * @author Joshua Gray
+ * @version 1.0.0
+ *
+ * @see Fragment
+ * @see FragmentManager
+ * @see FragmentTransaction
+ */
 public class FragmentBoss {
 
     /**
      * Called to replace a fragment in a container. Uses the fragment tag to identify unique
      * fragments.
      *
-     * If a fragment with a matching tag can be found in the fragment manager, it will be
-     * resurfaced by using {@link #resurfaceFragmentInBackStack(FragmentManager, String)}.
+     * Uses a handler that's running on the UI thread.
      *
-     * If no matching fragment tag can be found in the fragment manager, the fragment will be added
-     * using the fragmentTransaction.replace() method.  The fragment tag is also added to the back
-     * stack.
+     * This is the primary method of the FragmentBoss class. This method could be used any time a
+     * fragment needs to be placed into a container.
+     *
+     * If a fragment with a matching tag can be found in the fragment manager, it will be resurfaced
+     * by using {@link #resurfaceFragmentInBackStack(FragmentManager, String)}. If no matching
+     * fragment tag can be found in the fragment manager, the fragment will be added using the
+     * fragmentTransaction.replace(int containerViewId, Fragment fragment, String tag) method.
+     * The fragment tag is added to the back stack. Last, bringToFront is called on the fragment's
+     * view, to be sure that the fragment at the top of the back stack is also visible.
      *
      * @param containerViewId int: Identifier of the container whose fragment(s) are to be replaced.
      * @param fm FragmentManager: The fragment manager interface being used to interact with the
      *           fragment objects inside of the activity.
      * @param fragment Fragment: The fragment to be placed into the activity.
      * @param tagCombo String: The tagCombo is a pipe delimited string of values. Always create the
-     *                 tagCombo by using the {@link #tagJoiner(String, int, long)}  method. Always split
-     *                 the tagCombo by using the {@link #tagSplitter(String)} method.
+     *                 tagCombo by using the {@link #tagJoiner(String, int, long)}  method. Always
+     *                 split the tagCombo by using the {@link #tagSplitter(String)} method.
      */
     public static void replaceFragmentInContainer(final int containerViewId,
                                                   final FragmentManager fm, final Fragment fragment,
@@ -72,20 +92,22 @@ public class FragmentBoss {
      * Called by {@link #replaceFragmentInContainer(int, FragmentManager, Fragment, String)}
      * Do not call this method directly.
      *
-     * Called to resurface a desired fragment which already exists somewhere in the back stack.
+     * Called to resurface a desired fragment which already exists somewhere in the back stack,
+     * without changing or losing other currently existing fragments in the back stack.
+     *
+     * Uses a handler that's running on the UI thread.
      *
      * First, the current back stack is replicated in an ArrayList. Next, the back stack is emptied,
      * and all fragments are removed from the fragment manager. Next, the fragment manager and back
      * stack are refilled from the ArrayList in order, skipping the desired fragment. Last, the
-     * desired fragment is added.
+     * desired fragment is added, leaving it at the surface.
      *
      * @param fm FragmentManager: The fragment manager interface being used to interact with the
      *           fragment objects inside of the activity.
-     * @param desiredTagCombo String: The tagCombo is a pipe delimited string of values.
-     *                        Always create the tagCombo by using the {@link #tagJoiner(String, int, long)} method.
-     *                        Always split the tagCombo by using the {@link #tagSplitter(String)} method.
-     *                        This string is the fragment tag used to identify the unique fragment
-     *                        that we want to resurface.
+     * @param desiredTagCombo String: The tagCombo is a pipe delimited string of values. Always
+     *                        create the tagCombo by using the {@link #tagJoiner(String, int, long)}
+     *                        method. Always split the tagCombo by using the
+     *                        {@link #tagSplitter(String)} method.
      */
     public static void resurfaceFragmentInBackStack(final FragmentManager fm,
                                                     final String desiredTagCombo) {
@@ -111,7 +133,7 @@ public class FragmentBoss {
                         bsb.setTagCombo(tagCombo);
                         bsb.setTagTitle(tagSplitter(tagCombo)[0]);
                         bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
-                        bsb.setdbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
+                        bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
                         bsb.setFragment(fm.findFragmentByTag(tagCombo));
 
                         // Add the backStackBoss to our array list.
@@ -141,8 +163,8 @@ public class FragmentBoss {
                     }
                     fm.executePendingTransactions();
 
-                    // The fragment manager and back stack are refilled from the ArrayList in order, skipping
-                    // the desired fragment.
+                    // The fragment manager and back stack are refilled from the ArrayList in order,
+                    // skipping the desired fragment.
                     for (int entry = 0; entry < backStackArrayListSize; entry++) {
                         BackStackBoss bsb = backStackArrayList.get(entry);
                         int containerViewId = bsb.getContainerViewId();
@@ -157,8 +179,8 @@ public class FragmentBoss {
                     }
                     fm.executePendingTransactions();
 
-                    // Last, the desired fragment is added to the fragment manager and back stack, leaving it
-                    // on top.
+                    // Last, the desired fragment is added to the fragment manager and back stack,
+                    // leaving it on top.
                     for (int entry = 0; entry < backStackArrayListSize; entry++) {
                         BackStackBoss bsb = backStackArrayList.get(entry);
                         int containerViewId = bsb.getContainerViewId();
@@ -180,6 +202,23 @@ public class FragmentBoss {
 
     }
 
+    /**
+     * Called to bury a fragment at the bottom of the back stack.
+     *
+     * Uses a handler that's running on the UI thread.
+     *
+     * First, the current back stack is replicated in an ArrayList. Next, the back stack is emptied,
+     * and all fragments are removed from the fragment manager. Next, the fragment manager and back
+     * stack are refilled beginning with the desired fragment, and then the remaining fragments from
+     * the ArrayList in order.
+     *
+     * @param fm FragmentManager: The fragment manager interface being used to interact with the
+     *           fragment objects inside of the activity.
+     * @param desiredTagCombo String: The tagCombo is a pipe delimited string of values. Always
+     *                        create the tagCombo by using the {@link #tagJoiner(String, int, long)}
+     *                        method. Always split the tagCombo by using the
+     *                        {@link #tagSplitter(String)} method.
+     */
     public static void buryFragmentInBackStack(final FragmentManager fm,
                                                final String desiredTagCombo) {
         // Get a handler that can be used to post to the main thread
@@ -203,7 +242,7 @@ public class FragmentBoss {
                         bsb.setTagCombo(tagCombo);
                         bsb.setTagTitle(tagSplitter(tagCombo)[0]);
                         bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
-                        bsb.setdbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
+                        bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
                         bsb.setFragment(fm.findFragmentByTag(tagCombo));
 
                         // Add the backStackBoss to our array list.
@@ -274,8 +313,7 @@ public class FragmentBoss {
     /**
      * Called to pop the top fragment off of the fragment manager's back stack.
      *
-     * In addition to calling the usual popBackStackImmediate() we call the onResume() of the new
-     * top fragment. If we don't do this, the new top fragment has no way of knowing it was resumed.
+     * Uses a handler that's running on the UI thread.
      *
      * @param fm FragmentManager: The fragment manager interface being used to interact with the
      *           fragment objects inside of the activity.
@@ -297,19 +335,23 @@ public class FragmentBoss {
     /**
      * Called to join multiple fields into a pipe delimited String.
      *
-     * A String and an int are supplied. The String and the string value of the int are joined into
-     * a single pipe delimited String. The resulting String is returned.
-     *
      * @param tagTitle String: A traditional fragment tag, a unique string used to identify a unique
      *                 fragment. Used here as a fragment title.
      * @param containerViewId int: Identifier of the container for the fragment to be placed in.
+     * @param dbRecordId long: A database record ID, such as a unique column or primary key value.
+     *
      * @return The return value is a pipe delimited String. This is called the tagCombo.
      */
     public static String tagJoiner(String tagTitle, int containerViewId, long dbRecordId) {
         String result = new String();
+        // At a minimum, the tagTitle must be supplied.
         if (tagTitle != null) {
             Joiner joiner = Joiner.on("|");
-            result = joiner.join(tagTitle,String.valueOf(containerViewId),String.valueOf(dbRecordId));
+            result = joiner.join(
+                    tagTitle,
+                    String.valueOf(containerViewId),
+                    String.valueOf(dbRecordId)
+            );
         }
         return result;
     }
@@ -317,11 +359,8 @@ public class FragmentBoss {
     /**
      * Called to split multiple fields from a pipe delimited String.
      *
-     * A tagCombo is supplied. A String array of separated values is returned, a String and a string
-     * value of an int.
+     * @param tagCombo String: A pipe delimited String containing multiple values.
      *
-     * @param tagCombo String: A pipe delimited String containing multiple values, a String and a
-     *                 string value of an int.
      * @return The return value is a String array of the separated values from the tagCombo. These
      * values are: The String which is the fragment tag title; the string value of the int which
      * is the fragment's containerViewId.
@@ -337,15 +376,17 @@ public class FragmentBoss {
     }
 
     /**
-     * Called to locate and return a fragment with a specific tagTitle value, if one exists.
-     *
-     * A Fragment Manager and String are supplied.
+     * Called to locate and return a fragment where the tagCombo contains matching tagTitle and
+     * dbRecordId values.
      *
      * @param fm FragmentManager: The fragment manager interface being used to interact with the
      *           fragment objects inside of the activity.
      * @param desiredTagTitle String: The first of two pipe delimited values contained in the
      *                        tagCombo. The tagTitle is a traditional fragment tag, a unique string
      *                        used to identify a fragment.
+     * @param desiredDbRecordId long: A database record ID, such as a unique column or primary key
+     *                          value.
+     *
      * @return The return value is a Fragment if a match is found, or null if no match is found.
      */
     public static Fragment findFragmentByTagTitleAndDbId(final FragmentManager fm,
@@ -376,13 +417,17 @@ public class FragmentBoss {
 
     /**
      * Called to remove a fragment from the fragment manager and back stack. The fragment is located
-     * by matching on the tagTitle, a field in the tagCombo.
+     * by matching on the tagTitle and dbRecordId, fields in the BackStackBoss tagCombo.
+     *
+     * Uses a handler that's running on the UI thread.
      *
      * @param fm FragmentManager: The fragment manager interface being used to interact with the
      *           fragment objects inside of the activity.
      * @param undesiredTagTitle String: The first of two pipe delimited values contained in the
      *                          tagCombo. The tagTitle is a traditional fragment tag, a unique
      *                          string used to identify a fragment.
+     * @param undesiredDbRecordId long: A database record ID, such as a unique column or primary key
+     *                            value.
      */
     public static void removeFragmentByTagTitleAndDbId(final FragmentManager fm,
                                                        final String undesiredTagTitle,
@@ -409,7 +454,7 @@ public class FragmentBoss {
                         bsb.setTagCombo(tagCombo);
                         bsb.setTagTitle(tagSplitter(tagCombo)[0]);
                         bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
-                        bsb.setdbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
+                        bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
                         bsb.setFragment(fm.findFragmentByTag(tagCombo));
 
                         // Add the backStackBoss to our array list.
@@ -471,6 +516,15 @@ public class FragmentBoss {
 
     }
 
+    /**
+     *
+     * Called to call the onResume method in the fragment at the top of the back stack.
+     *
+     * Uses a handler that's running on the UI thread.
+     *
+     * @param fm FragmentManager: The fragment manager interface being used to interact with the
+     *           fragment objects inside of the activity.
+     */
     public static void topFragmentOnResume(final FragmentManager fm) {
         // Get a handler that can be used to post to the main thread
         Handler handler = new Handler(Looper.getMainLooper());
@@ -490,17 +544,26 @@ public class FragmentBoss {
     }
 
     /**
-     * This class represents a layer from the back stack. Each layer defines an int containerViewId,
-     * a Fragment, and a String tagCombo.
+     * This class represents a layer from the back stack.
+     *
+     * Each layer includes a {@link #containerViewId}, {@link #fragment}, and {@link #tagCombo}.
+     *
+     * The {@link #tagCombo} is a pipe delimited string, containing a {@link #tagTitle} and
+     * {@link #containerViewId} at minimum, so that the FragmentManager back stack may be
+     * deconstructed and reconstructed later. It can also contain a {@link #dbRecordId} to associate
+     * a database value with the fragment.
      */
     static class BackStackBoss {
 
+        public int containerViewId;
         public Fragment fragment;
         public String tagCombo;
         public String tagTitle;
-        public int containerViewId;
         public long dbRecordId;
 
+        public int getContainerViewId() {
+            return containerViewId;
+        }
         public Fragment getFragment() {
             return fragment;
         }
@@ -510,13 +573,13 @@ public class FragmentBoss {
         public String getTagTitle() {
             return tagTitle;
         }
-        public int getContainerViewId() {
-            return containerViewId;
-        }
         public long getDbRecordId() {
             return dbRecordId;
         }
 
+        public void setContainerViewId(int containerViewId) {
+            this.containerViewId = containerViewId;
+        }
         public void setFragment(Fragment fragment) {
             this.fragment = fragment;
         }
@@ -526,10 +589,7 @@ public class FragmentBoss {
         public void setTagTitle(String tagTitle) {
             this.tagTitle = tagTitle;
         }
-        public void setContainerViewId(int containerViewId) {
-            this.containerViewId = containerViewId;
-        }
-        public void setdbRecordId(long dbRecordId) {
+        public void setDbRecordId(long dbRecordId) {
             this.dbRecordId = dbRecordId;
         }
 
