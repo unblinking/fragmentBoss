@@ -23,9 +23,9 @@ import java.util.ArrayList;
  * @author Joshua Gray
  * @version 1.0.0
  *
- * @see Fragment
- * @see FragmentManager
- * @see FragmentTransaction
+ * @see android.support.v4.app.Fragment
+ * @see android.support.v4.app.FragmentManager
+ * @see android.support.v4.app.FragmentTransaction
  */
 public class FragmentBoss {
 
@@ -497,7 +497,8 @@ public class FragmentBoss {
                         long dbRecordId = bsb.getDbRecordId();
 
                         String entryCombo = tagTitle + String.valueOf(dbRecordId);
-                        String undesiredCombo = undesiredTagTitle + String.valueOf(undesiredDbRecordId);
+                        String undesiredCombo;
+                        undesiredCombo = undesiredTagTitle + String.valueOf(undesiredDbRecordId);
 
                         if (!entryCombo.equals(undesiredCombo)) {
                             FragmentTransaction ft = fm.beginTransaction();
