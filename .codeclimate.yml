@@ -2,12 +2,15 @@ engines:
   checkstyle:
     enabled: true
     channel: "beta"
+  fixme:
+    enabled: true
+  markdownlint:
+    enabled: true
   pmd:
     enabled: true
     channel: "beta"
-  fixme:
-    enabled: true
 
 ratings:
   paths:
   - "**.java"
+  - "**.md"
