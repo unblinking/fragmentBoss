@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
-        applicationId "com.nothingworksright.fragmentboss"
+        applicationId "com.nothingworksright.fragmentbossy"
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
@@ -19,9 +19,16 @@ android {
     }
 }
 
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.nothingworksright:fragmentBoss:1.00'
 }

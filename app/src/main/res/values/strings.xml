@@ -1,4 +1,9 @@
 <resources>
+
     <string name="app_name">fragmentBoss</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="action_add">Add</string>
+    <string name="action_list">List</string>
+
 </resources>
+
