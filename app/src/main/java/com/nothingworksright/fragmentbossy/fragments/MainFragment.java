@@ -87,8 +87,14 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         @Override
         public void afterTextChanged(Editable editable) {
             String newTagName = editTextName.getText().toString();
-            textViewTitle.setText(newTagName);
-            FragmentBoss.tagReplacer(getFragmentManager(), tagCombo, newTagName);
+            if (!newTagName.equals("")) {
+                textViewTitle.setText(newTagName);
+                FragmentBoss.tagReplacer(
+                        getFragmentManager(),
+                        tagCombo,
+                        newTagName
+                );
+            }
         }
     };
 
