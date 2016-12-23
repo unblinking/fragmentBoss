@@ -33,68 +33,94 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                // Add another fragment.
-
-                String tagName = "tagName";
-                int containerViewId = R.id.mainContainer;
-                long currentMillis = System.currentTimeMillis();
-                final String tagCombo = FragmentBoss.tagJoiner(tagName, containerViewId, currentMillis);
-
-                MainFragment fragment = MainFragment.newInstance(currentMillis);
-
-                Bundle bundle = new Bundle();
-                bundle.putLong("currentMillis", currentMillis);
-                fragment.setArguments(bundle);
-
-                FragmentBoss.replaceFragmentInContainer(
-                        containerViewId,
-                        getSupportFragmentManager(),
-                        fragment,
-                        tagCombo
-                );
-
-                return true;
-
+                return addAnotherFragment();
             case R.id.action_list:
-                // List available fragments.
-
-                List<String> list = new ArrayList<>();
-                FragmentManager fm = getSupportFragmentManager();
-                if (fm != null) {
-                    int backStackEntryCount = fm.getBackStackEntryCount();
-                    for (int entry = 0; entry < backStackEntryCount; entry++) {
-                        String fragmentTag = fm.getBackStackEntryAt(entry).getName();
-                        list.add(fragmentTag);
-                    }
-                }
-                final CharSequence[] charSequenceItems = list.toArray(new CharSequence[list.size()]);
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Open Fragments (name, containerViewId, and millis)");
-                // builder.setMessage("message");
-                builder.setItems(charSequenceItems, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        // Resurface the fragment.
-
-                        String tagCombo = charSequenceItems[item].toString();
-
-                        FragmentBoss.resurfaceFragmentInBackStack(
-                                getSupportFragmentManager(),
-                                tagCombo
-                        );
-
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-            return true;
-
+                return listFragmentsToResurface();
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
+    }
+
+    public boolean addAnotherFragment() {
+
+        // Add another fragment.
+
+        String tagName = "tagName";
+        int containerViewId = R.id.mainContainer;
+        long uniqueId = System.currentTimeMillis();
+        final String tagCombo = FragmentBoss.tagJoiner(tagName, containerViewId, uniqueId);
+
+        MainFragment fragment = MainFragment.newInstance(uniqueId);
+
+        Bundle bundle = new Bundle();
+        bundle.putLong("uniqueId", uniqueId);
+        fragment.setArguments(bundle);
+
+        FragmentBoss.replaceFragmentInContainer(
+                containerViewId,
+                getSupportFragmentManager(),
+                fragment,
+                tagCombo
+        );
+
+        return true;
+
+    }
+
+    public boolean listFragmentsToResurface() {
+
+        // Prepare a list of fragment tagCombo Strings.
+        List<String> fragmentTagcomboList = new ArrayList<>();
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm != null) {
+            int backStackEntryCount = fm.getBackStackEntryCount();
+            for (int entry = 0; entry < backStackEntryCount; entry++) {
+                String tagCombo = fm.getBackStackEntryAt(entry).getName();
+                fragmentTagcomboList.add(tagCombo);
+            }
+        }
+        final CharSequence[] charSeqTagCombos;
+        charSeqTagCombos = fragmentTagcomboList.toArray(
+                new CharSequence[fragmentTagcomboList.size()]
+        );
+
+        // Just the names from the tagCombo values.
+        List<String> fragmentTagnameList = new ArrayList<>();
+        for (String tagCombo : fragmentTagcomboList) {
+            String tagName = FragmentBoss.tagSplitter(tagCombo)[0];
+            fragmentTagnameList.add(tagName);
+        }
+        final CharSequence[] charSeqTagNames;
+        charSeqTagNames = fragmentTagnameList.toArray(
+                new CharSequence[fragmentTagnameList.size()]
+        );
+
+        // Use the list as items in an AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Resurface a fragment");
+        // Just show the names for the user to click on.
+        builder.setItems(charSeqTagNames, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                // Resurface the fragment.
+
+                // Use the tagName item index position to get the corresponding tagCombo
+                String tagCombo = charSeqTagCombos[item].toString();
+
+                // Resurface the fragment (bring the fragment to the top)
+                FragmentBoss.resurfaceFragmentInBackStack(
+                        getSupportFragmentManager(),
+                        tagCombo
+                );
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        return true;
+
     }
 
 }
