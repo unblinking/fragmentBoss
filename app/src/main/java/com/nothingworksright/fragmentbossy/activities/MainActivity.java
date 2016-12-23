@@ -52,10 +52,11 @@ public class MainActivity extends AppCompatActivity {
         long uniqueId = System.currentTimeMillis();
         final String tagCombo = FragmentBoss.tagJoiner(tagName, containerViewId, uniqueId);
 
-        MainFragment fragment = MainFragment.newInstance(uniqueId);
+        MainFragment fragment = MainFragment.newInstance();
 
         Bundle bundle = new Bundle();
         bundle.putLong("uniqueId", uniqueId);
+        bundle.putString("tagCombo", tagCombo);
         fragment.setArguments(bundle);
 
         FragmentBoss.replaceFragmentInContainer(

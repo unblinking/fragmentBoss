@@ -21,6 +21,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     View view;
     long uniqueId;
     String uniqueIdString;
+    String tagCombo;
     TextView textViewTitle;
     TextView textViewMillis;
     EditText editTextName;
@@ -55,20 +56,25 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         // Do nothing.
     }
 
-    public static MainFragment newInstance(long uniqueId){
+    public static MainFragment newInstance(){
         MainFragment fragment = new MainFragment();
-        /*Bundle bundle = new Bundle();
-        bundle.putLong("uniqueId", uniqueId);
-        fragment.setArguments(bundle);*/
         return fragment;
     }
 
     public void getFragmentArguments() {
         Bundle args = getArguments();
+
+        uniqueId = args.getLong("uniqueId", 0);
+        uniqueIdString = Long.toString(uniqueId);
+        tagCombo = args.getString("tagCombo");
+
+        /*
         if (args != null && args.containsKey("uniqueId")){
             uniqueId = args.getLong("uniqueId", 0);
             uniqueIdString = Long.toString(uniqueId);
+            tagCombo = args.getString("tagCombo");
         }
+        */
     }
 
     private final TextWatcher textWatcher = new TextWatcher() {
@@ -82,7 +88,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         public void afterTextChanged(Editable editable) {
             String newTagName = editTextName.getText().toString();
             textViewTitle.setText(newTagName);
-            FragmentBoss.tag
+            FragmentBoss.tagReplacer(getFragmentManager(), tagCombo, newTagName);
         }
     };
 

@@ -120,80 +120,81 @@ public class FragmentBoss {
                 if (fm != null) {
 
                     int backStackEntryCount = fm.getBackStackEntryCount();
+                    if (backStackEntryCount > 0) {
 
-                    // Populate our own ArrayList of the current back stack entries.
-                    ArrayList<BackStackBoss> backStackArrayList = new ArrayList<>();
-                    for (int entry = 0; entry < backStackEntryCount; entry++) {
+                        // Populate our own ArrayList of the current back stack entries.
+                        ArrayList<BackStackBoss> backStackArrayList = new ArrayList<>();
+                        for (int entry = 0; entry < backStackEntryCount; entry++) {
 
-                        // Get the tagCombo from this back stack entry in the fragment manager.
-                        String tagCombo = fm.getBackStackEntryAt(entry).getName();
+                            // Get the tagCombo from this back stack entry in the fragment manager.
+                            String tagCombo = fm.getBackStackEntryAt(entry).getName();
 
-                        // Using BackStackBoss(), set the back stack entry values.
-                        BackStackBoss bsb = new BackStackBoss();
-                        bsb.setTagCombo(tagCombo);
-                        bsb.setTagTitle(tagSplitter(tagCombo)[0]);
-                        bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
-                        bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
-                        bsb.setFragment(fm.findFragmentByTag(tagCombo));
+                            // Using BackStackBoss(), set the back stack entry values.
+                            BackStackBoss bsb = new BackStackBoss();
+                            bsb.setTagCombo(tagCombo);
+                            bsb.setTagTitle(tagSplitter(tagCombo)[0]);
+                            bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
+                            bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
+                            bsb.setFragment(fm.findFragmentByTag(tagCombo));
 
-                        // Add the backStackBoss to our array list.
-                        backStackArrayList.add(bsb);
+                            // Add the backStackBoss to our array list.
+                            backStackArrayList.add(bsb);
 
-                    }
+                        }
 
-                    int backStackArrayListSize = backStackArrayList.size();
+                        int backStackArrayListSize = backStackArrayList.size();
 
-                    // Clear the fragment manager back stack completely
-                    if (fm.getBackStackEntryCount() > 0) {
+                        // Clear the fragment manager back stack completely
                         FragmentManager.BackStackEntry firstEntry = fm.getBackStackEntryAt(0);
                         fm.popBackStackImmediate(
                                 firstEntry.getId(),
                                 FragmentManager.POP_BACK_STACK_INCLUSIVE
                         );
-                    }
-                    fm.executePendingTransactions();
+                        fm.executePendingTransactions();
 
-                    // Remove all fragments from the fragment manager
-                    for (int entry = 0; entry < backStackArrayListSize; entry++) {
-                        BackStackBoss bsb = backStackArrayList.get(entry);
-                        Fragment entryFragment = bsb.getFragment();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        ft.remove(entryFragment);
-                        ft.commit();
-                    }
-                    fm.executePendingTransactions();
-
-                    // The fragment manager and back stack are refilled from the ArrayList in order,
-                    // skipping the desired fragment.
-                    for (int entry = 0; entry < backStackArrayListSize; entry++) {
-                        BackStackBoss bsb = backStackArrayList.get(entry);
-                        int containerViewId = bsb.getContainerViewId();
-                        Fragment fragment = bsb.getFragment();
-                        String tagCombo = bsb.getTagCombo();
-                        if (!tagCombo.equals(desiredTagCombo)) {
+                        // Remove all fragments from the fragment manager
+                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
+                            BackStackBoss bsb = backStackArrayList.get(entry);
+                            Fragment entryFragment = bsb.getFragment();
                             FragmentTransaction ft = fm.beginTransaction();
-                            ft.add(containerViewId, fragment, tagCombo);
-                            ft.addToBackStack(tagCombo);
+                            ft.remove(entryFragment);
                             ft.commit();
                         }
-                    }
-                    fm.executePendingTransactions();
+                        fm.executePendingTransactions();
 
-                    // Last, the desired fragment is added to the fragment manager and back stack,
-                    // leaving it on top.
-                    for (int entry = 0; entry < backStackArrayListSize; entry++) {
-                        BackStackBoss bsb = backStackArrayList.get(entry);
-                        int containerViewId = bsb.getContainerViewId();
-                        Fragment fragment = bsb.getFragment();
-                        String tagCombo = bsb.getTagCombo();
-                        if (tagCombo.equals(desiredTagCombo)) {
-                            FragmentTransaction ft = fm.beginTransaction();
-                            ft.add(containerViewId, fragment, tagCombo);
-                            ft.addToBackStack(tagCombo);
-                            ft.commit();
+                        // The fragment manager and back stack are refilled from the ArrayList in order,
+                        // skipping the desired fragment.
+                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
+                            BackStackBoss bsb = backStackArrayList.get(entry);
+                            int containerViewId = bsb.getContainerViewId();
+                            Fragment fragment = bsb.getFragment();
+                            String tagCombo = bsb.getTagCombo();
+                            if (!tagCombo.equals(desiredTagCombo)) {
+                                FragmentTransaction ft = fm.beginTransaction();
+                                ft.add(containerViewId, fragment, tagCombo);
+                                ft.addToBackStack(tagCombo);
+                                ft.commit();
+                            }
                         }
+                        fm.executePendingTransactions();
+
+                        // Last, the desired fragment is added to the fragment manager and back stack,
+                        // leaving it on top.
+                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
+                            BackStackBoss bsb = backStackArrayList.get(entry);
+                            int containerViewId = bsb.getContainerViewId();
+                            Fragment fragment = bsb.getFragment();
+                            String tagCombo = bsb.getTagCombo();
+                            if (tagCombo.equals(desiredTagCombo)) {
+                                FragmentTransaction ft = fm.beginTransaction();
+                                ft.add(containerViewId, fragment, tagCombo);
+                                ft.addToBackStack(tagCombo);
+                                ft.commit();
+                            }
+                        }
+                        fm.executePendingTransactions();
+
                     }
-                    fm.executePendingTransactions();
 
                 }
             }
@@ -229,80 +230,81 @@ public class FragmentBoss {
                 if (fm != null) {
 
                     int backStackEntryCount = fm.getBackStackEntryCount();
+                    if (backStackEntryCount > 0) {
 
-                    // Populate our own ArrayList of the current back stack entries.
-                    ArrayList<BackStackBoss> backStackArrayList = new ArrayList<>();
-                    for (int entry = 0; entry < backStackEntryCount; entry++) {
+                        // Populate our own ArrayList of the current back stack entries.
+                        ArrayList<BackStackBoss> backStackArrayList = new ArrayList<>();
+                        for (int entry = 0; entry < backStackEntryCount; entry++) {
 
-                        // Get the tagCombo from this back stack entry in the fragment manager.
-                        String tagCombo = fm.getBackStackEntryAt(entry).getName();
+                            // Get the tagCombo from this back stack entry in the fragment manager.
+                            String tagCombo = fm.getBackStackEntryAt(entry).getName();
 
-                        // Using BackStackBoss(), set the back stack entry values.
-                        BackStackBoss bsb = new BackStackBoss();
-                        bsb.setTagCombo(tagCombo);
-                        bsb.setTagTitle(tagSplitter(tagCombo)[0]);
-                        bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
-                        bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
-                        bsb.setFragment(fm.findFragmentByTag(tagCombo));
+                            // Using BackStackBoss(), set the back stack entry values.
+                            BackStackBoss bsb = new BackStackBoss();
+                            bsb.setTagCombo(tagCombo);
+                            bsb.setTagTitle(tagSplitter(tagCombo)[0]);
+                            bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
+                            bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
+                            bsb.setFragment(fm.findFragmentByTag(tagCombo));
 
-                        // Add the backStackBoss to our array list.
-                        backStackArrayList.add(bsb);
+                            // Add the backStackBoss to our array list.
+                            backStackArrayList.add(bsb);
 
-                    }
+                        }
 
-                    int backStackArrayListSize = backStackArrayList.size();
+                        int backStackArrayListSize = backStackArrayList.size();
 
-                    // Clear the fragment manager back stack completely
-                    if (fm.getBackStackEntryCount() > 0) {
+                        // Clear the fragment manager back stack completely
                         FragmentManager.BackStackEntry firstEntry = fm.getBackStackEntryAt(0);
                         fm.popBackStackImmediate(
                                 firstEntry.getId(),
                                 FragmentManager.POP_BACK_STACK_INCLUSIVE
                         );
-                    }
-                    fm.executePendingTransactions();
+                        fm.executePendingTransactions();
 
-                    // Remove all fragments from the fragment manager
-                    for (int entry = 0; entry < backStackArrayListSize; entry++) {
-                        BackStackBoss bsb = backStackArrayList.get(entry);
-                        Fragment entryFragment = bsb.getFragment();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        ft.remove(entryFragment);
-                        ft.commit();
-                    }
-                    fm.executePendingTransactions();
-
-                    // First, the desired fragment is added to the fragment manager and back stack,
-                    // leaving it on the bottom.
-                    for (int entry = 0; entry < backStackArrayListSize; entry++) {
-                        BackStackBoss bsb = backStackArrayList.get(entry);
-                        int containerViewId = bsb.getContainerViewId();
-                        Fragment fragment = bsb.getFragment();
-                        String tagCombo = bsb.getTagCombo();
-                        if (tagCombo.equals(desiredTagCombo)) {
+                        // Remove all fragments from the fragment manager
+                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
+                            BackStackBoss bsb = backStackArrayList.get(entry);
+                            Fragment entryFragment = bsb.getFragment();
                             FragmentTransaction ft = fm.beginTransaction();
-                            ft.add(containerViewId, fragment, tagCombo);
-                            ft.addToBackStack(tagCombo);
+                            ft.remove(entryFragment);
                             ft.commit();
                         }
-                    }
-                    fm.executePendingTransactions();
+                        fm.executePendingTransactions();
 
-                    // Next, the fragment manager and back stack are refilled with the remaining
-                    // fragments from the ArrayList in order.
-                    for (int entry = 0; entry < backStackArrayListSize; entry++) {
-                        BackStackBoss bsb = backStackArrayList.get(entry);
-                        int containerViewId = bsb.getContainerViewId();
-                        Fragment fragment = bsb.getFragment();
-                        String tagCombo = bsb.getTagCombo();
-                        if (!tagCombo.equals(desiredTagCombo)) {
-                            FragmentTransaction ft = fm.beginTransaction();
-                            ft.add(containerViewId, fragment, tagCombo);
-                            ft.addToBackStack(tagCombo);
-                            ft.commit();
+                        // First, the desired fragment is added to the fragment manager and back stack,
+                        // leaving it on the bottom.
+                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
+                            BackStackBoss bsb = backStackArrayList.get(entry);
+                            int containerViewId = bsb.getContainerViewId();
+                            Fragment fragment = bsb.getFragment();
+                            String tagCombo = bsb.getTagCombo();
+                            if (tagCombo.equals(desiredTagCombo)) {
+                                FragmentTransaction ft = fm.beginTransaction();
+                                ft.add(containerViewId, fragment, tagCombo);
+                                ft.addToBackStack(tagCombo);
+                                ft.commit();
+                            }
                         }
+                        fm.executePendingTransactions();
+
+                        // Next, the fragment manager and back stack are refilled with the remaining
+                        // fragments from the ArrayList in order.
+                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
+                            BackStackBoss bsb = backStackArrayList.get(entry);
+                            int containerViewId = bsb.getContainerViewId();
+                            Fragment fragment = bsb.getFragment();
+                            String tagCombo = bsb.getTagCombo();
+                            if (!tagCombo.equals(desiredTagCombo)) {
+                                FragmentTransaction ft = fm.beginTransaction();
+                                ft.add(containerViewId, fragment, tagCombo);
+                                ft.addToBackStack(tagCombo);
+                                ft.commit();
+                            }
+                        }
+                        fm.executePendingTransactions();
+
                     }
-                    fm.executePendingTransactions();
 
                 }
             }
@@ -384,68 +386,68 @@ public class FragmentBoss {
                 if (fm != null) {
 
                     int backStackEntryCount = fm.getBackStackEntryCount();
+                    if (backStackEntryCount > 0) {
 
-                    // Populate our own ArrayList of the current back stack entries.
-                    ArrayList<BackStackBoss> backStackArrayList = new ArrayList<>();
-                    for (int entry = 0; entry < backStackEntryCount; entry++) {
+                        // Populate our own ArrayList of the current back stack entries.
+                        ArrayList<BackStackBoss> backStackArrayList = new ArrayList<>();
+                        for (int entry = 0; entry < backStackEntryCount; entry++) {
 
-                        // Get the tagCombo from this back stack entry in the fragment manager.
-                        String tagCombo = fm.getBackStackEntryAt(entry).getName();
+                            // Get the tagCombo from this back stack entry in the fragment manager.
+                            String tagCombo = fm.getBackStackEntryAt(entry).getName();
 
-                        // Using BackStackBoss(), set the back stack entry values.
-                        BackStackBoss bsb = new BackStackBoss();
-                        bsb.setTagCombo(tagCombo);
-                        bsb.setTagTitle(tagSplitter(tagCombo)[0]);
-                        bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
-                        bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
-                        bsb.setFragment(fm.findFragmentByTag(tagCombo));
+                            // Using BackStackBoss(), set the back stack entry values.
+                            BackStackBoss bsb = new BackStackBoss();
+                            bsb.setTagCombo(tagCombo);
+                            bsb.setTagTitle(tagSplitter(tagCombo)[0]);
+                            bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
+                            bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
+                            bsb.setFragment(fm.findFragmentByTag(tagCombo));
 
-                        // Add the backStackBoss to our array list.
-                        backStackArrayList.add(bsb);
+                            // Add the backStackBoss to our array list.
+                            backStackArrayList.add(bsb);
 
-                    }
+                        }
 
-                    int backStackArrayListSize = backStackArrayList.size();
+                        int backStackArrayListSize = backStackArrayList.size();
 
-                    // Clear the fragment manager back stack completely
-                    if (fm.getBackStackEntryCount() > 0) {
+                        // Clear the fragment manager back stack completely
                         FragmentManager.BackStackEntry firstEntry = fm.getBackStackEntryAt(0);
                         fm.popBackStackImmediate(
                                 firstEntry.getId(),
                                 FragmentManager.POP_BACK_STACK_INCLUSIVE
                         );
-                    }
-                    fm.executePendingTransactions();
+                        fm.executePendingTransactions();
 
-                    // Remove all fragments from the fragment manager
-                    for (int entry = 0; entry < backStackArrayListSize; entry++) {
-                        BackStackBoss bsb = backStackArrayList.get(entry);
-                        Fragment entryFragment = bsb.getFragment();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        ft.remove(entryFragment);
-                        ft.commit();
-                    }
-                    fm.executePendingTransactions();
-
-                    // The fragment manager and back stack are refilled from the ArrayList in order,
-                    // replacing the desired fragment tagCombo.
-                    for (int entry = 0; entry < backStackArrayListSize; entry++) {
-                        BackStackBoss bsb = backStackArrayList.get(entry);
-                        int containerViewId = bsb.getContainerViewId();
-                        Fragment fragment = bsb.getFragment();
-                        String tagCombo = bsb.getTagCombo();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        if (tagCombo.equals(oldTagCombo)) {
-                            ft.add(containerViewId, fragment, newTagCombo);
-                            ft.addToBackStack(tagCombo);
-                        } else {
-                            ft.add(containerViewId, fragment, tagCombo);
-                            ft.addToBackStack(tagCombo);
+                        // Remove all fragments from the fragment manager
+                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
+                            BackStackBoss bsb = backStackArrayList.get(entry);
+                            Fragment entryFragment = bsb.getFragment();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            ft.remove(entryFragment);
+                            ft.commit();
                         }
-                        ft.commit();
-                    }
-                    fm.executePendingTransactions();
+                        fm.executePendingTransactions();
 
+                        // The fragment manager and back stack are refilled from the ArrayList in order,
+                        // replacing the desired fragment tagCombo.
+                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
+                            BackStackBoss bsb = backStackArrayList.get(entry);
+                            int containerViewId = bsb.getContainerViewId();
+                            Fragment fragment = bsb.getFragment();
+                            String tagCombo = bsb.getTagCombo();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            if (tagCombo.equals(oldTagCombo)) {
+                                ft.add(containerViewId, fragment, newTagCombo);
+                                ft.addToBackStack(tagCombo);
+                            } else {
+                                ft.add(containerViewId, fragment, tagCombo);
+                                ft.addToBackStack(tagCombo);
+                            }
+                            ft.commit();
+                        }
+                        fm.executePendingTransactions();
+
+                    }
                 }
             }
         };
@@ -472,21 +474,25 @@ public class FragmentBoss {
         if (fm != null) {
 
             int backStackEntryCount = fm.getBackStackEntryCount();
+            if (backStackEntryCount > 0) {
 
-            for (int entry = 0; entry < backStackEntryCount; entry++) {
+                for (int entry = 0; entry < backStackEntryCount; entry++) {
 
-                // Gather the details from the back stack entry in the fragment manager.
-                String tagCombo = fm.getBackStackEntryAt(entry).getName();
-                String tagTitle = tagSplitter(tagCombo)[0];
-                int contViewId = Integer.valueOf(tagSplitter(tagCombo)[1]);
-                long dbRecordId = Long.valueOf(tagSplitter(tagCombo)[2]);
+                    // Gather the details from the back stack entry in the fragment manager.
+                    String tagCombo = fm.getBackStackEntryAt(entry).getName();
+                    String tagTitle = tagSplitter(tagCombo)[0];
+                    int contViewId = Integer.valueOf(tagSplitter(tagCombo)[1]);
+                    long dbRecordId = Long.valueOf(tagSplitter(tagCombo)[2]);
 
-                // If the fragment tagTitle and DB record ID are a match, return the fragment.
-                if (tagTitle.equals(desiredTagTitle) && dbRecordId == desiredDbRecordId) {
-                    return fm.findFragmentByTag(tagCombo);
+                    // If the fragment tagTitle and DB record ID are a match, return the fragment.
+                    if (tagTitle.equals(desiredTagTitle) && dbRecordId == desiredDbRecordId) {
+                        return fm.findFragmentByTag(tagCombo);
+                    }
+
                 }
 
             }
+
         }
         // If no fragment tagTitle matched, return null.
         return null;
@@ -518,74 +524,75 @@ public class FragmentBoss {
                 if (fm != null) {
 
                     int backStackEntryCount = fm.getBackStackEntryCount();
+                    if (backStackEntryCount > 0) {
 
-                    // Populate our own ArrayList of the current back stack entries.
-                    ArrayList<BackStackBoss> backStackArrayList = new ArrayList<>();
-                    for (int entry = 0; entry < backStackEntryCount; entry++) {
+                        // Populate our own ArrayList of the current back stack entries.
+                        ArrayList<BackStackBoss> backStackArrayList = new ArrayList<>();
+                        for (int entry = 0; entry < backStackEntryCount; entry++) {
 
-                        // Get the tagCombo from this back stack entry in the fragment manager.
-                        String tagCombo = fm.getBackStackEntryAt(entry).getName();
+                            // Get the tagCombo from this back stack entry in the fragment manager.
+                            String tagCombo = fm.getBackStackEntryAt(entry).getName();
 
-                        // Using BackStackBoss(), set the back stack entry values.
-                        BackStackBoss bsb = new BackStackBoss();
-                        bsb.setTagCombo(tagCombo);
-                        bsb.setTagTitle(tagSplitter(tagCombo)[0]);
-                        bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
-                        bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
-                        bsb.setFragment(fm.findFragmentByTag(tagCombo));
+                            // Using BackStackBoss(), set the back stack entry values.
+                            BackStackBoss bsb = new BackStackBoss();
+                            bsb.setTagCombo(tagCombo);
+                            bsb.setTagTitle(tagSplitter(tagCombo)[0]);
+                            bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
+                            bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
+                            bsb.setFragment(fm.findFragmentByTag(tagCombo));
 
-                        // Add the backStackBoss to our array list.
-                        backStackArrayList.add(bsb);
+                            // Add the backStackBoss to our array list.
+                            backStackArrayList.add(bsb);
 
-                    }
+                        }
 
-                    int backStackArrayListSize = backStackArrayList.size();
+                        int backStackArrayListSize = backStackArrayList.size();
 
-                    // Clear the fragment manager back stack completely
-                    if (fm.getBackStackEntryCount() > 0) {
+                        // Clear the fragment manager back stack completely
                         FragmentManager.BackStackEntry firstEntry = fm.getBackStackEntryAt(0);
                         fm.popBackStackImmediate(
                                 firstEntry.getId(),
                                 FragmentManager.POP_BACK_STACK_INCLUSIVE
                         );
-                    }
-                    fm.executePendingTransactions();
+                        fm.executePendingTransactions();
 
-                    // Remove all fragments from the fragment manager
-                    for (int entry = 0; entry < backStackArrayListSize; entry++) {
-                        BackStackBoss bsb = backStackArrayList.get(entry);
-                        Fragment entryFragment = bsb.getFragment();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        ft.remove(entryFragment);
-                        ft.commit();
-                    }
-                    fm.executePendingTransactions();
-
-                    // The fragment manager and back stack are refilled from the ArrayList in order,
-                    // skipping the undesired fragment.
-                    for (int entry = 0; entry < backStackArrayListSize; entry++) {
-
-                        BackStackBoss bsb = backStackArrayList.get(entry);
-
-                        Fragment fragment = bsb.getFragment();
-                        String tagCombo = bsb.getTagCombo();
-                        String tagTitle = bsb.getTagTitle();
-                        int containerViewId = bsb.getContainerViewId();
-                        long dbRecordId = bsb.getDbRecordId();
-
-                        String entryCombo = tagTitle + String.valueOf(dbRecordId);
-                        String undesiredCombo;
-                        undesiredCombo = undesiredTagTitle + String.valueOf(undesiredDbRecordId);
-
-                        if (!entryCombo.equals(undesiredCombo)) {
+                        // Remove all fragments from the fragment manager
+                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
+                            BackStackBoss bsb = backStackArrayList.get(entry);
+                            Fragment entryFragment = bsb.getFragment();
                             FragmentTransaction ft = fm.beginTransaction();
-                            ft.add(containerViewId, fragment, tagCombo);
-                            ft.addToBackStack(tagCombo);
+                            ft.remove(entryFragment);
                             ft.commit();
                         }
+                        fm.executePendingTransactions();
+
+                        // The fragment manager and back stack are refilled from the ArrayList in order,
+                        // skipping the undesired fragment.
+                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
+
+                            BackStackBoss bsb = backStackArrayList.get(entry);
+
+                            Fragment fragment = bsb.getFragment();
+                            String tagCombo = bsb.getTagCombo();
+                            String tagTitle = bsb.getTagTitle();
+                            int containerViewId = bsb.getContainerViewId();
+                            long dbRecordId = bsb.getDbRecordId();
+
+                            String entryCombo = tagTitle + String.valueOf(dbRecordId);
+                            String undesiredCombo;
+                            undesiredCombo = undesiredTagTitle + String.valueOf(undesiredDbRecordId);
+
+                            if (!entryCombo.equals(undesiredCombo)) {
+                                FragmentTransaction ft = fm.beginTransaction();
+                                ft.add(containerViewId, fragment, tagCombo);
+                                ft.addToBackStack(tagCombo);
+                                ft.commit();
+                            }
+
+                        }
+                        fm.executePendingTransactions();
 
                     }
-                    fm.executePendingTransactions();
 
                 }
             }
@@ -611,10 +618,11 @@ public class FragmentBoss {
             public void run() {
                 if (fm != null) {
                     int backStackEntryCount = fm.getBackStackEntryCount();
-                    String tagCombo = fm.getBackStackEntryAt(backStackEntryCount - 1).getName();
-                    Fragment fragment = fm.findFragmentByTag(tagCombo);
-                    fragment.onResume();
-
+                    if (backStackEntryCount > 0) {
+                        String tagCombo = fm.getBackStackEntryAt(backStackEntryCount - 1).getName();
+                        Fragment fragment = fm.findFragmentByTag(tagCombo);
+                        fragment.onResume();
+                    }
                 }
             }
         };
