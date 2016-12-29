@@ -2,6 +2,7 @@ package com.nothingworksright.fragmentbossy.activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import com.nothingworksright.fragmentbossy.fragments.MainFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.nothingworksright.fragmentboss.FragmentBoss.tagSplitter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,10 +35,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_add:
-                return addAnotherFragment();
+            case R.id.action_show_1:
+                return showFragment(getString(R.string.action_show_1), R.id.mainContainer, 1);
+            case R.id.action_show_2:
+                return showFragment(getString(R.string.action_show_2), R.id.mainContainer, 2);
+            case R.id.action_show_3:
+                return showFragment(getString(R.string.action_show_3), R.id.mainContainer, 3);
             case R.id.action_list:
-                return listFragmentsToResurface();
+                return fragmentListDialog();
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -43,22 +50,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public boolean addAnotherFragment() {
+    public boolean showFragment(String tagName, int containerViewId, long dbRecordId) {
 
-        // Add another fragment.
+        String tagCombo = FragmentBoss.tagJoiner(tagName, containerViewId, dbRecordId);
 
-        String tagName = "tagName";
-        int containerViewId = R.id.mainContainer;
-        long uniqueId = System.currentTimeMillis();
-        final String tagCombo = FragmentBoss.tagJoiner(tagName, containerViewId, uniqueId);
-
+        // We prepare a new fragment for this dbRecordId in case it isn't in the back stack yet.
         MainFragment fragment = MainFragment.newInstance();
 
         Bundle bundle = new Bundle();
-        bundle.putLong("uniqueId", uniqueId);
         bundle.putString("tagCombo", tagCombo);
         fragment.setArguments(bundle);
 
+        /*
+         * Using the fragmentBoss.replaceFragmentInContainer() method:
+         * If the tagCombo is an exact match to a fragment that already exists in the fragment
+         * manager's back stack, that fragment is resurfaced. If the tagCombo is not found in the
+         * fragment manager, the fragment is added. The fragment's view is also brought to the
+         * front.
+         */
         FragmentBoss.replaceFragmentInContainer(
                 containerViewId,
                 getSupportFragmentManager(),
@@ -66,11 +75,17 @@ public class MainActivity extends AppCompatActivity {
                 tagCombo
         );
 
+        Snackbar.make(
+                findViewById(R.id.mainContainer),
+                getString(R.string.showing_fragment, tagName),
+                Snackbar.LENGTH_LONG
+        ).show();
+
         return true;
 
     }
 
-    public boolean listFragmentsToResurface() {
+    public boolean fragmentListDialog() {
 
         // Prepare a list of fragment tagCombo Strings.
         List<String> fragmentTagcomboList = new ArrayList<>();
@@ -87,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 new CharSequence[fragmentTagcomboList.size()]
         );
 
-        // Just the names from the tagCombo values.
+        // Prepare a list of only the names from the tagCombo values.
         List<String> fragmentTagnameList = new ArrayList<>();
         for (String tagCombo : fragmentTagcomboList) {
             String tagName = FragmentBoss.tagSplitter(tagCombo)[0];
@@ -101,20 +116,17 @@ public class MainActivity extends AppCompatActivity {
         // Use the list as items in an AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Resurface a fragment");
-        // Just show the names for the user to click on.
+        // Just show the tagName values for the user to click on.
         builder.setItems(charSeqTagNames, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                // Resurface the fragment.
-
-                // Use the tagName item index position to get the corresponding tagCombo
+                // Use the tagName item index position to get the corresponding tagCombo.
                 String tagCombo = charSeqTagCombos[item].toString();
-
-                // Resurface the fragment (bring the fragment to the top)
-                FragmentBoss.resurfaceFragmentInBackStack(
-                        getSupportFragmentManager(),
-                        tagCombo
-                );
-
+                // Split fragment information out of the tagCombo.
+                String tagName = tagSplitter(tagCombo)[0];
+                int containerViewId = Integer.valueOf(tagSplitter(tagCombo)[1]);
+                long dbRecordId = Long.valueOf(tagSplitter(tagCombo)[2]);
+                // Show the fragment
+                showFragment(tagName, containerViewId, dbRecordId);
             }
         });
         AlertDialog dialog = builder.create();

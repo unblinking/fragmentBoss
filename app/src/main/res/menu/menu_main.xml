@@ -10,8 +10,16 @@
     <!-- Menu items can go here. -->
 
     <item
-        android:id="@+id/action_add"
-        android:title="@string/action_add"
+        android:id="@+id/action_show_1"
+        android:title="@string/action_show_1"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_show_2"
+        android:title="@string/action_show_2"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_show_3"
+        android:title="@string/action_show_3"
         app:showAsAction="ifRoom"/>
 
     <item

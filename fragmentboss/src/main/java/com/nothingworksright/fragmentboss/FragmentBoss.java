@@ -113,7 +113,7 @@ public class FragmentBoss {
                                                     final String desiredTagCombo) {
 
         // Get a handler that can be used to post to the main thread
-        Handler handler = new Handler(Looper.getMainLooper());
+        //Handler handler = new Handler(Looper.getMainLooper());
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -147,8 +147,8 @@ public class FragmentBoss {
                         // Clear the fragment manager back stack completely
                         FragmentManager.BackStackEntry firstEntry = fm.getBackStackEntryAt(0);
                         fm.popBackStackImmediate(
-                                firstEntry.getId(),
-                                FragmentManager.POP_BACK_STACK_INCLUSIVE
+                            firstEntry.getId(),
+                            FragmentManager.POP_BACK_STACK_INCLUSIVE
                         );
                         fm.executePendingTransactions();
 
@@ -199,7 +199,9 @@ public class FragmentBoss {
                 }
             }
         };
-        handler.post(runnable);
+        //handler.post(runnable);
+        Thread thread = new Thread(runnable);
+        thread.start();
 
     }
 
@@ -377,83 +379,6 @@ public class FragmentBoss {
         return result;
     }
 
-    public static void tagReplacer(final FragmentManager fm, final String oldTagCombo, final String newTagCombo) {
-        // Get a handler that can be used to post to the main thread
-        Handler handler = new Handler(Looper.getMainLooper());
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (fm != null) {
-
-                    int backStackEntryCount = fm.getBackStackEntryCount();
-                    if (backStackEntryCount > 0) {
-
-                        // Populate our own ArrayList of the current back stack entries.
-                        ArrayList<BackStackBoss> backStackArrayList = new ArrayList<>();
-                        for (int entry = 0; entry < backStackEntryCount; entry++) {
-
-                            // Get the tagCombo from this back stack entry in the fragment manager.
-                            String tagCombo = fm.getBackStackEntryAt(entry).getName();
-
-                            // Using BackStackBoss(), set the back stack entry values.
-                            BackStackBoss bsb = new BackStackBoss();
-                            bsb.setTagCombo(tagCombo);
-                            bsb.setTagTitle(tagSplitter(tagCombo)[0]);
-                            bsb.setContainerViewId(Integer.valueOf(tagSplitter(tagCombo)[1]));
-                            bsb.setDbRecordId(Long.valueOf(tagSplitter(tagCombo)[2]));
-                            bsb.setFragment(fm.findFragmentByTag(tagCombo));
-
-                            // Add the backStackBoss to our array list.
-                            backStackArrayList.add(bsb);
-
-                        }
-
-                        int backStackArrayListSize = backStackArrayList.size();
-
-                        // Clear the fragment manager back stack completely
-                        FragmentManager.BackStackEntry firstEntry = fm.getBackStackEntryAt(0);
-                        fm.popBackStackImmediate(
-                                firstEntry.getId(),
-                                FragmentManager.POP_BACK_STACK_INCLUSIVE
-                        );
-                        fm.executePendingTransactions();
-
-                        // Remove all fragments from the fragment manager
-                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
-                            BackStackBoss bsb = backStackArrayList.get(entry);
-                            Fragment entryFragment = bsb.getFragment();
-                            FragmentTransaction ft = fm.beginTransaction();
-                            ft.remove(entryFragment);
-                            ft.commit();
-                        }
-                        fm.executePendingTransactions();
-
-                        // The fragment manager and back stack are refilled from the ArrayList in order,
-                        // replacing the desired fragment tagCombo.
-                        for (int entry = 0; entry < backStackArrayListSize; entry++) {
-                            BackStackBoss bsb = backStackArrayList.get(entry);
-                            int containerViewId = bsb.getContainerViewId();
-                            Fragment fragment = bsb.getFragment();
-                            String tagCombo = bsb.getTagCombo();
-                            FragmentTransaction ft = fm.beginTransaction();
-                            if (tagCombo.equals(oldTagCombo)) {
-                                ft.add(containerViewId, fragment, newTagCombo);
-                                ft.addToBackStack(tagCombo);
-                            } else {
-                                ft.add(containerViewId, fragment, tagCombo);
-                                ft.addToBackStack(tagCombo);
-                            }
-                            ft.commit();
-                        }
-                        fm.executePendingTransactions();
-
-                    }
-                }
-            }
-        };
-        handler.post(runnable);
-    }
-
     /**
      * Called to locate and return a fragment where the tagCombo contains matching tagTitle and
      * dbRecordId values.
@@ -474,6 +399,7 @@ public class FragmentBoss {
         if (fm != null) {
 
             int backStackEntryCount = fm.getBackStackEntryCount();
+
             if (backStackEntryCount > 0) {
 
                 for (int entry = 0; entry < backStackEntryCount; entry++) {
@@ -524,6 +450,7 @@ public class FragmentBoss {
                 if (fm != null) {
 
                     int backStackEntryCount = fm.getBackStackEntryCount();
+
                     if (backStackEntryCount > 0) {
 
                         // Populate our own ArrayList of the current back stack entries.

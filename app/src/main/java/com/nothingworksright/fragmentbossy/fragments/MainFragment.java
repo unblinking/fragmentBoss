@@ -2,16 +2,15 @@ package com.nothingworksright.fragmentbossy.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.nothingworksright.fragmentboss.FragmentBoss;
 import com.nothingworksright.fragmentbossy.R;
+
+import static com.nothingworksright.fragmentboss.FragmentBoss.tagSplitter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,12 +18,11 @@ import com.nothingworksright.fragmentbossy.R;
 public class MainFragment extends Fragment implements View.OnClickListener {
 
     View view;
-    long uniqueId;
-    String uniqueIdString;
     String tagCombo;
-    TextView textViewTitle;
-    TextView textViewMillis;
-    EditText editTextName;
+    TextView textViewTagName;
+    TextView textViewContainerViewId;
+    TextView textViewDbRecordId;
+    EditText editText;
 
     public MainFragment() {
         // Required empty public constructor
@@ -35,17 +33,20 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_main, container, false);
-        textViewTitle = (TextView) view.findViewById(R.id.textViewTitle);
-        textViewMillis = (TextView) view.findViewById(R.id.textViewMillis);
-        editTextName = (EditText) view.findViewById(R.id.editTextName);
+        textViewTagName = (TextView) view.findViewById(R.id.textViewTagName);
+        textViewContainerViewId = (TextView) view.findViewById(R.id.textViewContainerViewId);
+        textViewDbRecordId = (TextView) view.findViewById(R.id.textViewDbRecordId);
+        editText = (EditText) view.findViewById(R.id.editText);
 
         getFragmentArguments();
 
-        String millisFullText = getString(R.string.unique_id) + Long.toString(uniqueId);
-        textViewMillis.setText(millisFullText);
+        String tagName = tagSplitter(tagCombo)[0];
+        String containerViewId = tagSplitter(tagCombo)[1];
+        String dbRecordId = tagSplitter(tagCombo)[2];
 
-        editTextName.setHint(getString(R.string.type_a_new_name));
-        editTextName.addTextChangedListener(textWatcher);
+        textViewTagName.setText(getString(R.string.tag_name, tagName));
+        textViewContainerViewId.setText(getString(R.string.container_view_id, containerViewId));
+        textViewDbRecordId.setText(getString(R.string.db_record_id, dbRecordId));
 
         return view;
 
@@ -56,6 +57,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         // Do nothing.
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
     public static MainFragment newInstance(){
         MainFragment fragment = new MainFragment();
         return fragment;
@@ -63,40 +70,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     public void getFragmentArguments() {
         Bundle args = getArguments();
-
-        uniqueId = args.getLong("uniqueId", 0);
-        uniqueIdString = Long.toString(uniqueId);
         tagCombo = args.getString("tagCombo");
-
-        /*
-        if (args != null && args.containsKey("uniqueId")){
-            uniqueId = args.getLong("uniqueId", 0);
-            uniqueIdString = Long.toString(uniqueId);
-            tagCombo = args.getString("tagCombo");
-        }
-        */
     }
-
-    private final TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-        @Override
-        public void afterTextChanged(Editable editable) {
-            String newTagName = editTextName.getText().toString();
-            if (!newTagName.equals("")) {
-                textViewTitle.setText(newTagName);
-                FragmentBoss.tagReplacer(
-                        getFragmentManager(),
-                        tagCombo,
-                        newTagName
-                );
-            }
-        }
-    };
 
 }
 

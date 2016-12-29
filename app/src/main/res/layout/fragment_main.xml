@@ -12,31 +12,35 @@
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewTitle"
+        android:id="@+id/textViewTagName"
         android:padding="10dp"
         android:textSize="18sp"
         android:background="@color/colorPrimaryDark"
         android:textColor="@android:color/holo_orange_light"
         />
-
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewMillis"
+        android:id="@+id/textViewContainerViewId"
         android:padding="10dp"
-        android:textSize="12sp"
-        android:background="@color/colorPrimary"
-        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@android:color/holo_orange_light"
         />
-
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewDbRecordId"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@android:color/holo_orange_light"
+        />
     <android.support.v7.widget.AppCompatEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextName"
-        android:padding="10dp"
-        android:textSize="16sp"
-        android:background="@color/colorPrimary"
-        android:textColor="@android:color/white"
+        android:id="@+id/editText"
+        android:hint="@string/type_here"
         />
 
 </LinearLayout>
