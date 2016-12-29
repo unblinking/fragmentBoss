@@ -113,7 +113,7 @@ public class FragmentBoss {
                                                     final String desiredTagCombo) {
 
         // Get a handler that can be used to post to the main thread
-        //Handler handler = new Handler(Looper.getMainLooper());
+        Handler handler = new Handler(Looper.getMainLooper());
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -199,9 +199,7 @@ public class FragmentBoss {
                 }
             }
         };
-        //handler.post(runnable);
-        Thread thread = new Thread(runnable);
-        thread.start();
+        handler.post(runnable);
 
     }
 
