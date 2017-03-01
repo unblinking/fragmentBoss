@@ -130,3 +130,7 @@ Sometimes after making changes, it can be helpful to manually call the `onResume
 The interesting parts [are right here.](../blob/master/fragmentboss/src/main/java/com/nothingworksright/fragmentboss/FragmentBoss.java)
 
 For additional information, please refer to the [fragmentBoss GitHub Wiki](https://github.com/nothingworksright/fragmentBoss/wiki).  
+
+## Show your support  
+
+Support this project by [making a pledge via Patreon](https://www.patreon.com/jmg1138).  
