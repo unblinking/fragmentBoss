@@ -9,7 +9,6 @@ engines:
   pmd:
     enabled: true
     channel: "beta"
-
 ratings:
   paths:
   - "**.java"
