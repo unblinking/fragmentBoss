@@ -133,4 +133,8 @@ For additional information, please refer to the [fragmentBoss GitHub Wiki](https
 
 ## Show your support  
 
-Support this project by [making a pledge via Patreon](https://www.patreon.com/jmg1138).  
+Support this open source project and motivate me to continue development. Using [Beerpay.io](https://beerpay.io/nothingworksright/fragmentBoss?focus=wish) you can send me support, and make a wish for a new feature or issue fix.  
+
+[Click here to show your support](https://beerpay.io/nothingworksright/fragmentBoss?focus=wish).  
+
+[![Beerpay](https://beerpay.io/nothingworksright/fragmentBoss/badge.svg?style=beer)](https://beerpay.io/nothingworksright/fragmentBoss)  [![Beerpay](https://beerpay.io/nothingworksright/fragmentBoss/make-wish.svg?style=flat)](https://beerpay.io/nothingworksright/fragmentBoss?focus=wish)  
