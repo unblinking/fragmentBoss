@@ -1,8 +1,6 @@
 # fragmentBoss  
 
-[![Release](https://jitpack.io/v/com.nothingworksright/fragmentBoss.svg)](https://jitpack.io/#com.nothingworksright/fragmentBoss)  
-
-[![GitHub release](https://img.shields.io/github/release/nothingworksright/fragmentBoss.svg)](https://github.com/nothingworksright/fragmentBoss/releases)  [![GitHub tag](https://img.shields.io/github/tag/nothingworksright/fragmentBoss.svg)](https://github.com/nothingworksright/fragmentBoss/tags)  [![GitHub commits](https://img.shields.io/github/commits-since/nothingworksright/fragmentBoss/v1.0.1.svg)](https://github.com/nothingworksright/fragmentBoss/commits/master)  
+[![Release](https://jitpack.io/v/com.nothingworksright/fragmentBoss.svg)](https://jitpack.io/#com.nothingworksright/fragmentBoss) [![GitHub release](https://img.shields.io/github/release/nothingworksright/fragmentBoss.svg)](https://github.com/nothingworksright/fragmentBoss/releases)  [![GitHub tag](https://img.shields.io/github/tag/nothingworksright/fragmentBoss.svg)](https://github.com/nothingworksright/fragmentBoss/tags)  [![GitHub commits](https://img.shields.io/github/commits-since/nothingworksright/fragmentBoss/v1.0.1.svg)](https://github.com/nothingworksright/fragmentBoss/commits/master)  
 
 <a href="https://codeclimate.com/github/nothingworksright/fragmentBoss"><img src="https://codeclimate.com/github/nothingworksright/fragmentBoss/badges/gpa.svg" /></a>  <a href="https://codeclimate.com/github/nothingworksright/fragmentBoss/coverage"><img src="https://codeclimate.com/github/nothingworksright/fragmentBoss/badges/coverage.svg" /></a>  <a href="https://codeclimate.com/github/nothingworksright/fragmentBoss"><img src="https://codeclimate.com/github/nothingworksright/fragmentBoss/badges/issue_count.svg" /></a>  
 
