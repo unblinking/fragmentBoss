@@ -130,11 +130,3 @@ Sometimes after making changes, it can be helpful to manually call the `onResume
 The interesting parts [are right here.](../blob/master/fragmentboss/src/main/java/com/nothingworksright/fragmentboss/FragmentBoss.java)
 
 For additional information, please refer to the [fragmentBoss GitHub Wiki](https://github.com/nothingworksright/fragmentBoss/wiki).  
-
-## Show your support  
-
-Support this open source project and motivate me to continue development. Using [Beerpay.io](https://beerpay.io/nothingworksright/fragmentBoss?focus=wish) you can send me support, and make a wish for a new feature or issue fix.  
-
-[Click here to show your support](https://beerpay.io/nothingworksright/fragmentBoss?focus=wish).  
-
-[![Beerpay](https://beerpay.io/nothingworksright/fragmentBoss/badge.svg?style=beer)](https://beerpay.io/nothingworksright/fragmentBoss)  [![Beerpay](https://beerpay.io/nothingworksright/fragmentBoss/make-wish.svg?style=flat)](https://beerpay.io/nothingworksright/fragmentBoss?focus=wish)  
