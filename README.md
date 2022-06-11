@@ -1,6 +1,6 @@
 # fragmentBoss  
 
-[![Release](https://jitpack.io/v/com.nothingworksright/fragmentBoss.svg)](https://jitpack.io/#com.nothingworksright/fragmentBoss) [![GitHub release](https://img.shields.io/github/release/unblinking/fragmentBoss.svg)](https://github.com/unblinking/fragmentBoss/releases)  [![GitHub tag](https://img.shields.io/github/tag/unblinking/fragmentBoss.svg)](https://github.com/unblinking/fragmentBoss/tags)  [![GitHub commits](https://img.shields.io/github/commits-since/unblinking/fragmentBoss/v1.0.1.svg)](https://github.com/unblinking/fragmentBoss/commits/master)  
+[![Release](https://jitpack.io/v/com.unblinking/fragmentBoss.svg)](https://jitpack.io/#com.unblinking/fragmentBoss) [![GitHub release](https://img.shields.io/github/release/unblinking/fragmentBoss.svg)](https://github.com/unblinking/fragmentBoss/releases)  [![GitHub tag](https://img.shields.io/github/tag/unblinking/fragmentBoss.svg)](https://github.com/unblinking/fragmentBoss/tags)  [![GitHub commits](https://img.shields.io/github/commits-since/unblinking/fragmentBoss/v1.0.1.svg)](https://github.com/unblinking/fragmentBoss/commits/master)  
 
 # Bossing your Fragments around with the FragmentBoss Library  
 
@@ -23,7 +23,7 @@ Adding FragmentBoss to your project is simple. Using JitPack and this GitHub rep
     }
 
     dependencies {
-        compile 'com.nothingworksright:fragmentBoss:1.00'
+        compile 'com.unblinking:fragmentBoss:1.00'
     }
 ```
 
