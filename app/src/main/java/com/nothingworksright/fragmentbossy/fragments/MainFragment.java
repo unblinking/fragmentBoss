@@ -1,4 +1,4 @@
-package com.nothingworksright.fragmentbossy.fragments;
+package com.unblinking.fragmentbossy.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.nothingworksright.fragmentbossy.R;
+import com.unblinking.fragmentbossy.R;
 
-import static com.nothingworksright.fragmentboss.FragmentBoss.tagSplitter;
+import static com.unblinking.fragmentboss.FragmentBoss.tagSplitter;
 
 /**
  * A simple {@link Fragment} subclass.
