@@ -1,16 +1,15 @@
 # fragmentBoss  
 
-[![Release](https://jitpack.io/v/com.nothingworksright/fragmentBoss.svg)](https://jitpack.io/#com.nothingworksright/fragmentBoss) [![GitHub release](https://img.shields.io/github/release/nothingworksright/fragmentBoss.svg)](https://github.com/nothingworksright/fragmentBoss/releases)  [![GitHub tag](https://img.shields.io/github/tag/nothingworksright/fragmentBoss.svg)](https://github.com/nothingworksright/fragmentBoss/tags)  [![GitHub commits](https://img.shields.io/github/commits-since/nothingworksright/fragmentBoss/v1.0.1.svg)](https://github.com/nothingworksright/fragmentBoss/commits/master)  
+[![Release](https://jitpack.io/v/com.nothingworksright/fragmentBoss.svg)](https://jitpack.io/#com.nothingworksright/fragmentBoss) [![GitHub release](https://img.shields.io/github/release/unblinking/fragmentBoss.svg)](https://github.com/unblinking/fragmentBoss/releases)  [![GitHub tag](https://img.shields.io/github/tag/unblinking/fragmentBoss.svg)](https://github.com/unblinking/fragmentBoss/tags)  [![GitHub commits](https://img.shields.io/github/commits-since/unblinking/fragmentBoss/v1.0.1.svg)](https://github.com/unblinking/fragmentBoss/commits/master)  
 
-<a href="https://codeclimate.com/github/nothingworksright/fragmentBoss"><img src="https://codeclimate.com/github/nothingworksright/fragmentBoss/badges/gpa.svg" /></a>  <a href="https://codeclimate.com/github/nothingworksright/fragmentBoss/coverage"><img src="https://codeclimate.com/github/nothingworksright/fragmentBoss/badges/coverage.svg" /></a>  <a href="https://codeclimate.com/github/nothingworksright/fragmentBoss"><img src="https://codeclimate.com/github/nothingworksright/fragmentBoss/badges/issue_count.svg" /></a>  
+# Bossing your Fragments around with the FragmentBoss Library  
 
-# Bossing your Fragments around with the FragmentBoss Library
+## Usage  
 
-## Usage
+FragmentBoss is a library module for Android projects.  
 
-FragmentBoss is a library module for Android projects.
+### Manage your fragments with the FragmentBoss  
 
-### Manage your fragments with the FragmentBoss
 Replacing fragments in containers is simple when you use FragmentBoss. Unique fragments are identified by a pipe delimited `String tagCombo`, which includes the fragment's `int containerViewId`, `String tagTitle`, and may optionally include a `long dbRecordId` to associate a database record with a fragment.  If the `tagCombo` is an exact match to a fragment that already exists in the fragment manager's back stack, that fragment is resurfaced. If the `tagCombo` is not found in the fragment manager, the fragment is added. The fragment's view is also brought to the front. Other methods include burying a fragment at the bottom of the back stack, popping the back stack, creating and splitting a `tagCombo`, locating existing fragments in the back stack by their `tagTitle` and `dbRecordId`, removing fragments from the back stack by their `tagTitle` and `dbRecordId`, and calling the `onResume` method of the fragment at the top of the back stack.
 
 ### Setting up FragmentBoss
@@ -123,6 +122,6 @@ Sometimes after making changes, it can be helpful to manually call the `onResume
 ## More
 
 ### Take a look at the source code
-The interesting parts [are right here.](../blob/master/fragmentboss/src/main/java/com/nothingworksright/fragmentboss/FragmentBoss.java)
+The interesting parts [are right here.](../blob/master/fragmentboss/src/main/java/com/unblinking/fragmentboss/FragmentBoss.java)
 
-For additional information, please refer to the [fragmentBoss GitHub Wiki](https://github.com/nothingworksright/fragmentBoss/wiki).  
+For additional information, please refer to the [fragmentBoss GitHub Wiki](https://github.com/unblinking/fragmentBoss/wiki).  
