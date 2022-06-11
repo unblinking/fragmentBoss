@@ -1,4 +1,4 @@
-package com.nothingworksright.fragmentbossy.activities;
+package com.unblinking.fragmentbossy.activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -9,14 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.nothingworksright.fragmentboss.FragmentBoss;
-import com.nothingworksright.fragmentbossy.R;
-import com.nothingworksright.fragmentbossy.fragments.MainFragment;
+import com.unblinking.fragmentboss.FragmentBoss;
+import com.unblinking.fragmentbossy.R;
+import com.unblinking.fragmentbossy.fragments.MainFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nothingworksright.fragmentboss.FragmentBoss.tagSplitter;
+import static com.unblinking.fragmentboss.FragmentBoss.tagSplitter;
 
 public class MainActivity extends AppCompatActivity {
 
