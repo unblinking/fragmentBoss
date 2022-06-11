@@ -1,4 +1,4 @@
-package com.nothingworksright.fragmentboss;
+package com.unblinking.fragmentboss;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
